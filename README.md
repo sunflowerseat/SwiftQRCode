@@ -6,13 +6,16 @@
 
 
 
-##使用
+## 使用
+
 
 [代码地址：https://github.com/sunflowerseat/SwiftQRCode](https://github.com/sunflowerseat/SwiftQRCode)
 
 先贴一下使用方法，实在太简单，就一个ViewController，根本懒得弄什么pod，直接把SwiftQRCodeVC拷贝过来用就ok了， 记得要给权限 `Privacy - Camera Usage Description`
 
-###自定义
+
+### 自定义
+
 
 里面有些属性方便自定义
 
