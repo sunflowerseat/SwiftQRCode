@@ -12,6 +12,7 @@ private let scanAnimationDuration = 3.0//扫描时长
 private let needSound = true //扫描结束是否需要播放声音
 private let scanWidth : CGFloat = 300 //扫描框宽度
 private let scanHeight : CGFloat = 300 //扫描框高度
+private let isRecoScanSize = true //是否仅识别框内
 
 class SwiftQRCodeVC: UIViewController
 {
@@ -160,7 +161,11 @@ class SwiftQRCodeVC: UIViewController
         
         //设置扫描区域
         NotificationCenter.default.addObserver(forName: NSNotification.Name.AVCaptureInputPortFormatDescriptionDidChange, object: nil, queue: nil, using: { (noti) in
-            self.output.rectOfInterest = self.scanPreviewLayer.metadataOutputRectConverted(fromLayerRect: self.scanPane.frame)
+            if(isRecoScanSize){
+                self.output.rectOfInterest = self.scanPreviewLayer.metadataOutputRectConverted(fromLayerRect: self.scanPane.frame)
+            }else{
+                self.output.rectOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
+            }
         })
     }
     
