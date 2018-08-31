@@ -12,6 +12,8 @@
 		B10038922137EE1000F2BC41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10038912137EE1000F2BC41 /* Assets.xcassets */; };
 		B10038A02137F06700F2BC41 /* QRCode_ScanBox.png in Sources */ = {isa = PBXBuildFile; fileRef = B100389F2137EFC500F2BC41 /* QRCode_ScanBox.png */; };
 		B10038A12137F06700F2BC41 /* QRCode_ScanLine.png in Sources */ = {isa = PBXBuildFile; fileRef = B100389E2137EFB600F2BC41 /* QRCode_ScanLine.png */; };
+		B1772F4D2138D2070066C84B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B1772F4C2138D2070066C84B /* README.md */; };
+		B1772F4F2138DDF40066C84B /* noticeMusic.caf in Resources */ = {isa = PBXBuildFile; fileRef = B1772F4E2138DDF40066C84B /* noticeMusic.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +24,8 @@
 		B10038962137EE1000F2BC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B100389E2137EFB600F2BC41 /* QRCode_ScanLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCode_ScanLine.png; sourceTree = "<group>"; };
 		B100389F2137EFC500F2BC41 /* QRCode_ScanBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCode_ScanBox.png; sourceTree = "<group>"; };
-		B10038A32137F37100F2BC41 /* noticeMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = noticeMusic.caf; sourceTree = "<group>"; };
+		B1772F4C2138D2070066C84B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B1772F4E2138DDF40066C84B /* noticeMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = noticeMusic.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +44,7 @@
 			children = (
 				B10038892137EE1000F2BC41 /* SwiftQRCode */,
 				B10038882137EE1000F2BC41 /* Products */,
+				B1772F4C2138D2070066C84B /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,7 +70,7 @@
 		B100389C2137EF7400F2BC41 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				B10038A32137F37100F2BC41 /* noticeMusic.caf */,
+				B1772F4E2138DDF40066C84B /* noticeMusic.caf */,
 				B100389F2137EFC500F2BC41 /* QRCode_ScanBox.png */,
 				B100389E2137EFB600F2BC41 /* QRCode_ScanLine.png */,
 				B10038912137EE1000F2BC41 /* Assets.xcassets */,
@@ -133,7 +137,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1772F4D2138D2070066C84B /* README.md in Resources */,
 				B10038922137EE1000F2BC41 /* Assets.xcassets in Resources */,
+				B1772F4F2138DDF40066C84B /* noticeMusic.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

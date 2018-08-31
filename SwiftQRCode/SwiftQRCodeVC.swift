@@ -2,7 +2,7 @@
 //  SwiftQRCodeVC.swift
 //
 //  Created by fancy on 18/9/1.
-//  Copyright © 2016年 gaofu. All rights reserved.
+//  Copyright © 2018年 fancy. All rights reserved.
 //
 
 import UIKit
@@ -13,49 +13,54 @@ private let needSound = true //扫描结束是否需要播放声音
 private let scanWidth : CGFloat = 300 //扫描框宽度
 private let scanHeight : CGFloat = 300 //扫描框高度
 private let isRecoScanSize = true //是否仅识别框内
+private let scanBoxImagePath = "QRCode_ScanBox" //扫描框图片
+private let scanLineImagePath = "QRCode_ScanLine" //扫描线图片
+private let soundFilePath = "noticeMusic.caf" //声音文件
 
-class SwiftQRCodeVC: UIViewController
-{
+class SwiftQRCodeVC: UIViewController{
     
     var scanPane: UIImageView!///扫描框
     var scanPreviewLayer : AVCaptureVideoPreviewLayer! //预览图层
     var output : AVCaptureMetadataOutput!
     var scanSession :  AVCaptureSession?
     
-    lazy var scanLine : UIImageView =
-        {
-            
+    lazy var scanLine : UIImageView = {
             let scanLine = UIImageView()
             scanLine.frame = CGRect(x: 0, y: 0, width: scanWidth, height: 3)
-            scanLine.image = UIImage(named: "QRCode_ScanLine")
-            
+            scanLine.image = UIImage(named: scanLineImagePath)
             return scanLine
             
     }()
     
-    override func viewDidLoad()
-    {
-        
+    override func viewDidLoad(){
         super.viewDidLoad()
         
+        //初始化界面
         self.initView()
         
-        //监听设备旋转
-        NotificationCenter.default.addObserver(self, selector: #selector(onDeviceOrientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+        //初始化ScanSession
         setupScanSession()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        startScan()
     }
     
     //初始化界面
     func initView()  {
         scanPane = UIImageView()
         scanPane.frame = CGRect(x: 300, y: 100, width: 400, height: 400)
-        scanPane.image = UIImage(named: "QRCode_ScanBox")
+        scanPane.image = UIImage(named: scanBoxImagePath)
         self.view.addSubview(scanPane)
         
+        //增加约束
+        addConstraint()
         
-        //禁止将AutoresizingMask转化为Constraints
+        scanPane.addSubview(scanLine)
+    }
+    
+    func addConstraint() {
         scanPane.translatesAutoresizingMaskIntoConstraints = false
         //创建约束
         let widthConstraint = NSLayoutConstraint(item: scanPane, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: scanWidth)
@@ -64,24 +69,13 @@ class SwiftQRCodeVC: UIViewController
         let centerY = NSLayoutConstraint(item: scanPane, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0)
         //添加多个约束
         view.addConstraints([widthConstraint,heightConstraint,centerX,centerY])
-        
-        scanPane.addSubview(scanLine)
     }
     
-    
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        startScan()
-    }
     
     //初始化scanSession
-    func setupScanSession()
-    {
+    func setupScanSession(){
         
-        do
-        {
+        do{
             //设置捕捉设备
             let device = AVCaptureDevice.default(for: AVMediaType.video)!
             //设置设备输入输出
@@ -95,13 +89,11 @@ class SwiftQRCodeVC: UIViewController
             let  scanSession = AVCaptureSession()
             scanSession.canSetSessionPreset(.high)
             
-            if scanSession.canAddInput(input)
-            {
+            if scanSession.canAddInput(input){
                 scanSession.addInput(input)
             }
             
-            if scanSession.canAddOutput(output)
-            {
+            if scanSession.canAddOutput(output){
                 scanSession.addOutput(output)
             }
             
@@ -123,24 +115,18 @@ class SwiftQRCodeVC: UIViewController
             
             setLayerOrientationByDeviceOritation()
             
-            
             //保存会话
             self.scanSession = scanSession
             
-        }
-        catch
-        {
+        }catch{
             //摄像头不可用
-            
-            confirm(title: "温馨提示", message: "摄像头不可用", controller: self)
-            
+            self.confirm(title: "温馨提示", message: "摄像头不可用", controller: self)
             return
         }
         
     }
     
     func setLayerOrientationByDeviceOritation() {
-        
         if(scanPreviewLayer == nil){
             return
         }
@@ -168,18 +154,15 @@ class SwiftQRCodeVC: UIViewController
             }
         })
     }
-    
-    //监听设备旋转
-    @objc func onDeviceOrientationChanged(){
-        print(":onDeviceOrientationChanged")
+
+    //设备旋转后重新布局
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setLayerOrientationByDeviceOritation()
-        self.scanSession?.stopRunning()
-        self.scanSession?.startRunning()
     }
     
     //开始扫描
-    fileprivate func startScan()
-    {
+    fileprivate func startScan(){
         
         scanLine.layer.add(scanAnimation(), forKey: "scan")
         guard let scanSession = scanSession else { return }
@@ -190,8 +173,7 @@ class SwiftQRCodeVC: UIViewController
     }
     
     //扫描动画
-    private func scanAnimation() -> CABasicAnimation
-    {
+    private func scanAnimation() -> CABasicAnimation{
         
         let startPoint = CGPoint(x: scanLine .center.x  , y: 1)
         let endPoint = CGPoint(x: scanLine.center.x, y: scanHeight - 2)
@@ -207,32 +189,9 @@ class SwiftQRCodeVC: UIViewController
         return translation
     }
     
-    //弹出确认框
-    func confirm(title:String?,message:String?,controller:UIViewController,handler: ( (UIAlertAction) -> Swift.Void)? = nil)
-    {
-        
-        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let entureAction = UIAlertAction(title: "确定", style: .destructive, handler: handler)
-        alertVC.addAction(entureAction)
-        controller.present(alertVC, animated: true, completion: nil)
-        
-    }
-    
-    //播放声音
-    func playAlertSound(sound:String){
-        guard let soundPath = Bundle.main.path(forResource: sound, ofType: nil)  else { return }
-        guard let soundUrl = NSURL(string: soundPath) else { return }
-        
-        var soundID:SystemSoundID = 0
-        AudioServicesCreateSystemSoundID(soundUrl, &soundID)
-        AudioServicesPlaySystemSound(soundID)
-    }
-    
     //MARK: -
     //MARK: Dealloc
-    deinit
-    {
+    deinit{
         ///移除通知
         NotificationCenter.default.removeObserver(self)
     }
@@ -254,24 +213,39 @@ extension SwiftQRCodeVC : AVCaptureMetadataOutputObjectsDelegate
         
         //播放声音
         if(needSound){
-            playAlertSound(sound: "noticeMusic.caf")
+            self.playAlertSound()
         }
         
         //扫描完成
-        if metadataObjects.count > 0
-        {
-            if let resultObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject
-            {
-                confirm(title: "扫描结果", message: resultObj.stringValue, controller: self,handler: { (_) in
+        if metadataObjects.count > 0 {
+            if let resultObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject{
+                self.confirm(title: "扫描结果", message: resultObj.stringValue, controller: self,handler: { (_) in
                     //继续扫描
                     self.startScan()
                 })
-                
             }
-            
         }
     }
     
+    //弹出确认框
+    func confirm(title:String?,message:String?,controller:UIViewController,handler: ( (UIAlertAction) -> Swift.Void)? = nil){
+        
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let entureAction = UIAlertAction(title: "确定", style: .destructive, handler: handler)
+        alertVC.addAction(entureAction)
+        controller.present(alertVC, animated: true, completion: nil)
+        
+    }
+    
+    //播放声音
+    func playAlertSound(){
+        guard let soundPath = Bundle.main.path(forResource: soundFilePath, ofType: nil)  else { return }
+        guard let soundUrl = NSURL(string: soundPath) else { return }
+        var soundID:SystemSoundID = 0
+        AudioServicesCreateSystemSoundID(soundUrl, &soundID)
+        AudioServicesPlaySystemSound(soundID)
+    }
 }
 
 

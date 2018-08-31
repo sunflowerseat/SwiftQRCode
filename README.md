@@ -20,9 +20,10 @@
 里面有些属性方便自定义
 
 - scanAnimationDuration  	扫描时长 
-	 needSound 			        扫描结束是否需要播放声音 
-- scanWidth                                  扫描框宽度 
-- scanHeight                                扫描框高度 
+- needSound 			        扫描结束是否需要播放声音
+- scanWidth                          扫描框宽度
+- scanHeight                         扫描框高度
+- isRecoScanSize                是否仅识别框内
 
 
 
