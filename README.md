@@ -14,7 +14,7 @@
 
 备注：声音文件需要右键点击项目名称，add Files to "项目名称"，acc文件是无效的
 
-扫描完成后，在`metadataOutput`方法中写回调 ，默认是连续扫描的
+扫描完成后，在`func qrCodeCallBack(_ codeString : String?)`方法中写回调 ，默认是连续扫描的
 
 ### 自定义
 

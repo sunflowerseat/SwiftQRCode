@@ -42,6 +42,7 @@ class SwiftQRCodeVC: UIViewController{
         setupScanSession()
     }
     
+    
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         startScan()
@@ -58,6 +59,14 @@ class SwiftQRCodeVC: UIViewController{
         addConstraint()
         
         scanPane.addSubview(scanLine)
+    }
+    
+    //扫描完成回调
+    func qrCodeCallBack(_ codeString : String?) {
+        self.confirm(title: "扫描结果", message: codeString, controller: self,handler: { (_) in
+            //继续扫描
+            self.startScan()
+        })
     }
     
     func addConstraint() {
@@ -204,7 +213,8 @@ class SwiftQRCodeVC: UIViewController{
 extension SwiftQRCodeVC : AVCaptureMetadataOutputObjectsDelegate
 {
     
-    //扫描捕捉完成
+    
+    //捕捉扫描结果
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
         //停止扫描
@@ -219,10 +229,7 @@ extension SwiftQRCodeVC : AVCaptureMetadataOutputObjectsDelegate
         //扫描完成
         if metadataObjects.count > 0 {
             if let resultObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject{
-                self.confirm(title: "扫描结果", message: resultObj.stringValue, controller: self,handler: { (_) in
-                    //继续扫描
-                    self.startScan()
-                })
+                self.qrCodeCallBack(resultObj.stringValue)
             }
         }
     }
