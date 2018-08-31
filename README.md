@@ -20,6 +20,11 @@
 
 里面有些属性方便自定义
 
+- scanAnimationDuration      扫描时长
+- needSound                     扫描结束是否需要播放声音
+- scanWidth                                  扫描框宽度
+- scanHeight                                扫描框高度
+- isRecoScanSize               是否仅识别框内
 | 属性名称              | 属性含义                 |
 | --------------------- | ------------------------ |
 | scanAnimationDuration | 扫描时长                 |
@@ -30,6 +35,13 @@
 | scanBoxImagePath      | 扫描框图片               |
 | scanLineImagePath     | 扫描线图片               |
 | soundFilePath         | 声音文件                 |
+
+
+
+
+扫描线替换：QRCode_ScanLine.png 把这个图片换掉就可以了
+
+扫描框替换：QRCode_ScanBox.png  把这个图片换掉就可以了
 
 
 ## 总结
