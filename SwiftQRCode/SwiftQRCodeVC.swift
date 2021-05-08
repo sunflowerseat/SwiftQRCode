@@ -40,8 +40,14 @@ class SwiftQRCodeVC: UIViewController{
         
         //初始化ScanSession
         setupScanSession()
+        
+        // 监听屏幕旋转
+        NotificationCenter.default.addObserver(self, selector: #selector(receiverNotification), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
+    @objc func receiverNotification() {
+        setLayerOrientationByDeviceOritation()
+    }
     
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
